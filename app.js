@@ -1,6 +1,7 @@
-const express = require('express');
-const exphbs = require('express-handlebars');
-const mongoose = require('mongoose');
+const express = require('express'),
+    exphbs = require('express-handlebars'),
+    mongoose = require('mongoose'),
+    bodyParser = require('body-parser');
 
 const app = express();
 
@@ -22,13 +23,43 @@ app.engine('handlebars', exphbs({
 }));
 app.set('view engine', 'handlebars');
 
-// Index route
+// Body-parse middleware
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
+
+// Index routes
 app.get('/', (req, res) =>{
     const title = 'Welcome';
     res.render('index', {
         title: title
     });
 });
+
+// Add Idea Form
+app.get('/ideas/add', (req, res) =>{
+    res.render('ideas/add');
+})
+
+// Process Form
+app.post('/ideas', (req, res) => {
+    let errors = [];
+
+    if(req.body.title){
+        errors.push({text: 'Please add a title'});
+    }
+    if(!req.body.details){
+        errors.push({text: 'Please add details'});
+    }
+    if(errors.length > 0){
+        res.render('ideas/add', {
+            errors: errors,
+            title: req.body.title,
+            details: req.body.details
+        });
+    }else {
+        res.send('passed');
+    }
+})
 
 // About route
 app.get('/about', (req, res) =>{
