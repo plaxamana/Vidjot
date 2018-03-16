@@ -76,8 +76,14 @@ app.get('/about', (req, res) =>{
 
 // Ideas route 
 app.get('/ideas', (req, res) => {
-    res.render('ideas');
-})
+    Idea.find({})
+    .sort({date: 'desc'})
+    .then(ideas =>{
+        res.render('ideas/index',{
+            ideas: ideas
+        });
+    });
+});
 
 const port = 3000;
 
