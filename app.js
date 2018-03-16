@@ -14,8 +14,8 @@ mongoose.connect('mongodb://localhost/vidjot-dev')
 .catch(err => console.log(err));
 
 // Load Idea model
-require('./models/Ideas');
-const Ideas = mongoose.model('Ideas');
+require('./models/Idea')
+const Idea = mongoose.model('Idea');
 
 // Handlebars Middleware
 app.engine('handlebars', exphbs({
@@ -44,7 +44,7 @@ app.get('/ideas/add', (req, res) =>{
 app.post('/ideas', (req, res) => {
     let errors = [];
 
-    if(req.body.title){
+    if(!req.body.title){
         errors.push({text: 'Please add a title'});
     }
     if(!req.body.details){
@@ -57,13 +57,26 @@ app.post('/ideas', (req, res) => {
             details: req.body.details
         });
     }else {
-        res.send('passed');
+        const newUser = {
+            title: req.body.title,
+            details: req.body.details
+        }
+        new Idea(newUser)
+        .save()
+        .then(Idea => {
+            res.redirect('/ideas');
+        })
     }
 })
 
 // About route
 app.get('/about', (req, res) =>{
     res.render('about');
+})
+
+// Ideas route 
+app.get('/ideas', (req, res) => {
+    res.render('ideas');
 })
 
 const port = 3000;
