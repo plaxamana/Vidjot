@@ -4,10 +4,13 @@ const mongoose = require('mongoose');
 
 const app = express();
 
+// Map global promise
+mongoose.Promise = global.Promise;
+
 // Connect to Mongoose
-mongoose.connect('mongodb://localhost/vidjot-dev', {
-    useMongoClient: true
-});
+mongoose.connect('mongodb://localhost/vidjot-dev')
+.then(() => console.log('MongoDB connected...'))
+.catch(err => console.log(err));
 
 // Handlebars Middleware
 app.engine('handlebars', exphbs({
