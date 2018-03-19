@@ -1,6 +1,8 @@
 const express = require('express'),
     exphbs = require('express-handlebars'),
     methodOverride = require('method-override'),
+    flash = require('connect-flash'),
+    session = require('express-session'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser');
 
@@ -100,6 +102,14 @@ app.put('/ideas/:id', (req, res)=> {
         .then(idea =>{
             res.redirect('/ideas');
         })
+    });
+});
+
+// Delete idea
+app.delete('/ideas/:id', (req, res)=>{
+    Idea.remove({_id: req.params.id})
+    .then(()=> {
+        res.redirect('/ideas');
     });
 });
 
