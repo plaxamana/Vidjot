@@ -1,4 +1,5 @@
 const express = require('express'),
+    path = require('path'),
     exphbs = require('express-handlebars'),
     methodOverride = require('method-override'),
     flash = require('connect-flash'),
@@ -27,8 +28,11 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 
 // Body-parse middleware
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+// Static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Method override middleware
 app.use(methodOverride('_method'));
@@ -63,7 +67,6 @@ app.get('/', (req, res) =>{
 app.get('/about', (req, res) =>{
     res.render('about');
 })
-
 
 // Use routes
 app.use('/ideas', ideas);
