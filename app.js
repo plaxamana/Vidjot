@@ -11,7 +11,7 @@ const app = express();
 
 // Load routes
 const ideas = require('./routes/ideas');
-const users = require('./routes/users');
+const users = require('./routes/user');
 
 // Map global promise
 mongoose.Promise = global.Promise;
