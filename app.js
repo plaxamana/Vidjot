@@ -5,13 +5,17 @@ const express = require('express'),
     flash = require('connect-flash'),
     session = require('express-session'),
     mongoose = require('mongoose'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    passport = require('passport');
 
 const app = express();
 
 // Load routes
 const ideas = require('./routes/ideas');
 const users = require('./routes/user');
+
+// Passport config
+require('./config/passport')(passport);
 
 // Map global promise
 mongoose.Promise = global.Promise;
